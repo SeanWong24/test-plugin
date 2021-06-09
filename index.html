@@ -6,17 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test</title>
-    <!-- <script src="test_plugin.js"></script> -->
+    <script type="module" src="test_plugin_1.js"></script>
 </head>
 
 <body>
     <input id="file-input" type="file" oninput="onFileInput()">
+    <input id="url-input" type="text">
+    <button onclick="loadPlugin()">Load</button>
     <div id="plugin-container">
 
     </div>
 
     <script>
         const pluginNames = [];
+
+        async function loadPlugin(){
+            const urlInput = document.querySelector('#url-input');
+            const url = urlInput.value;
+
+            const plugin = await import(url);
+            customElements.define('plugin-' + pluginNames.length, plugin.default);
+            pluginNames.push(plugin.name);
+
+            const pluginContainer = document.querySelector('#plugin-container');
+            const pluginElement = document.createElement('plugin-' + (pluginNames.length - 1));
+            pluginElement.setAttribute('message', prompt('write a message', 'hello world'));
+            pluginElement.addEventListener('click', () => alert('a'));
+            pluginContainer.append(pluginElement);
+        }
 
         async function onFileInput() {
             const fileInput = document.querySelector('#file-input');

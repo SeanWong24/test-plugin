@@ -50,5 +50,3 @@ class Plugin2 extends HTMLElement {
     }
 
 }
-
-export default Plugin2;
