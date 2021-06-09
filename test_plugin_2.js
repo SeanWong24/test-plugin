@@ -1,4 +1,4 @@
-class Plugin2 extends HTMLElement {
+export default class extends HTMLElement {
 
     static name = 'Test Plugin 2';
 
@@ -50,5 +50,3 @@ class Plugin2 extends HTMLElement {
     }
 
 }
-
-export default Plugin2;
