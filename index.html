@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Test</title>
     <script type="module" src="test_plugin_1.js"></script>
-</head>
+  </head>
 
-<body>
-    <input id="file-input" type="file" oninput="onFileInput()">
-    <input id="url-input" type="text">
+  <body>
+    <input id="file-input" type="file" oninput="onFileInput()" />
+    <input id="url-input" type="text" value="./test_plugin_1.js" />
     <button onclick="loadPlugin()">Load</button>
-    <div id="plugin-container">
-
-    </div>
+    <div id="plugin-container"></div>
 
     <script>
-        const pluginNames = [];
+      const pluginNames = [];
 
-        async function loadPlugin(){
-            const urlInput = document.querySelector('#url-input');
-            const url = urlInput.value;
+      async function loadPlugin() {
+        const urlInput = document.querySelector("#url-input");
+        const url = urlInput.value;
 
-            const plugin = await import(url);
-            customElements.define('plugin-' + pluginNames.length, plugin.default);
-            pluginNames.push(plugin.name);
+        const plugin = await import(url);
+        customElements.define("plugin-" + pluginNames.length, plugin.default);
+        pluginNames.push(plugin.name);
 
-            const pluginContainer = document.querySelector('#plugin-container');
-            const pluginElement = document.createElement('plugin-' + (pluginNames.length - 1));
-            pluginElement.setAttribute('message', prompt('write a message', 'hello world'));
-            pluginElement.addEventListener('click', () => alert('a'));
-            pluginContainer.append(pluginElement);
-        }
+        const pluginContainer = document.querySelector("#plugin-container");
+        const pluginElement = document.createElement(
+          "plugin-" + (pluginNames.length - 1)
+        );
+        pluginElement.setAttribute(
+          "message",
+          prompt("write a message", "hello world")
+        );
+        pluginElement.addEventListener("click", () => alert("a"));
+        pluginContainer.append(pluginElement);
+      }
 
-        async function onFileInput() {
-            const fileInput = document.querySelector('#file-input');
-            const file = fileInput.files[0];
+      async function onFileInput() {
+        const fileInput = document.querySelector("#file-input");
+        const file = fileInput.files[0];
 
-            const readFileAsText = (file) =>
-                new Promise((resolve) => {
-                    let fileReader = new FileReader();
-                    fileReader.onload = (e) => resolve(fileReader.result);
-                    fileReader.readAsText(file);
-                });
+        const readFileAsText = (file) =>
+          new Promise((resolve) => {
+            let fileReader = new FileReader();
+            fileReader.onload = (e) => resolve(fileReader.result);
+            fileReader.readAsText(file);
+          });
 
-            const fileContent = await readFileAsText(file);
-            fileInput.value = null;
+        const fileContent = await readFileAsText(file);
+        fileInput.value = null;
 
-            const plugin = eval('(' + fileContent + ')');
-            customElements.define('plugin-' + pluginNames.length, plugin);
-            pluginNames.push(plugin.name);
+        const plugin = eval("(" + fileContent + ")");
+        customElements.define("plugin-" + pluginNames.length, plugin);
+        pluginNames.push(plugin.name);
 
-            const pluginContainer = document.querySelector('#plugin-container');
-            const pluginElement = document.createElement('plugin-' + (pluginNames.length - 1));
-            pluginElement.setAttribute('message', prompt('write a message', 'hello world'));
-            pluginElement.addEventListener('click', () => alert('a'));
-            pluginContainer.append(pluginElement);
-        }
+        const pluginContainer = document.querySelector("#plugin-container");
+        const pluginElement = document.createElement(
+          "plugin-" + (pluginNames.length - 1)
+        );
+        pluginElement.setAttribute(
+          "message",
+          prompt("write a message", "hello world")
+        );
+        pluginElement.addEventListener("click", () => alert("a"));
+        pluginContainer.append(pluginElement);
+      }
     </script>
-</body>
-
+  </body>
 </html>
